@@ -7274,7 +7274,7 @@ bool pc_memo(map_session_data* sd, int32 pos)
 
 		// prevent memo-ing the same map multiple times
 		ARR_FIND( 0, MAX_MEMOPOINTS + extendedMemo, i, strncmp( sd->status.memo_point[i].map, mapname, sizeof( sd->status.memo_point[i].map ) ) == 0 );
-		memmove( &sd->status.memo_point[1], &sd->status.memo_point[0], ( u8min( i, MAX_MEMOPOINTS + extendedMemo - 1 ) ) * sizeof( struct s_point_str ) );
+		memmove( &sd->status.memo_point[1], &sd->status.memo_point[0], ( u8min( i, static_cast<uint8>( MAX_MEMOPOINTS + extendedMemo - 1 ) ) ) * sizeof( struct s_point_str ) );
 		pos = 0;
 	}
 

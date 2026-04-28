@@ -19,7 +19,7 @@ void SkillWarpPortal::castendPos2(block_list* src, int32 x, int32 y, uint16 skil
 #if PACKETVER_MAIN_NUM < 20170502 || PACKETVER_RE_NUM < 20170419 || !defined(PACKETVER_ZERO)
 		extendedMemo = 0; // Extended memo points are not supported before these versions, so we need to ignore the value read from the register.
 #endif
-		std::vector<std::string> maps(MAX_MEMOPOINTS + extendedMemo + 1);
+		std::vector<std::string> maps(static_cast<size_t>(MAX_MEMOPOINTS + extendedMemo + 1));
 		maps.push_back( sd->status.save_point.map );
 
 		if( skill_lv >= 2 ){

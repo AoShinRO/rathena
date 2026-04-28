@@ -284,7 +284,7 @@ prontera,225,330,4	script	Missionary Rosetta	4_F_SISTER,{
 end;
 OnInit:
 	.npc_name$ = "["+strnpcinfo(0)+"]";
-	questinfo QTYPE_QUEST2,QMARK_NONE,"((Class == JOB_CARDINAL || Class == JOB_INQUISITOR) && !EXT_MEMO_SLOTS && getskilllv(27) == 4 && isbegin_quest(16586) == 0) || isbegin_quest(16597) == 1 || isbegin_quest(16598) == 1";
+	questinfo QTYPE_QUEST2,QMARK_NONE,"((Class == JOB_CARDINAL || Class == JOB_INQUISITOR) && !EXT_MEMO_SLOTS && getskilllv(27) >= 4 && isbegin_quest(16586) == 0) || isbegin_quest(16597) == 1 || isbegin_quest(16598) == 1";
 end;
 }
 
@@ -531,8 +531,8 @@ einbroch,178,148,4	script	Suan	1_M_PASTOR,{
 		mes .npc_name$; 
 		mes "Please, save the children for us."; //unnoficial behavior
 		close2;
-		if(isbegin_quest(16583) == 1)
-			open_quest_ui(16583); // The Hide and Seek of the Naughty, the Restlessness of the Adults 1
+		if(isbegin_quest(16593) == 1)
+			open_quest_ui(16593); // The Hide and Seek of the Naughty, the Restlessness of the Adults 1
 		else if(isbegin_quest(16594) == 1)
 			open_quest_ui(16594); // The Hide and Seek of the Naughty, the Restlessness of the Adults 2
 		else
@@ -617,7 +617,7 @@ einbroch,178,148,4	script	Suan	1_M_PASTOR,{
 end;
 OnInit:
 	.npc_name$ = "["+strnpcinfo(0)+"]";
-	questinfo QTYPE_QUEST2,QMARK_NONE,"(isbegin_quest(16587) == 1  && isbegin_quest(16592) == 0) || (checkquest(16592,HUNTING) == 2 && isbegin_quest(16599) == 1)";
+	questinfo QTYPE_QUEST2,QMARK_NONE,"(isbegin_quest(16588) == 1  && isbegin_quest(16596) == 0) || (checkquest(16596,HUNTING) == 2 && isbegin_quest(16600) == 1)";
 end;
 }
 

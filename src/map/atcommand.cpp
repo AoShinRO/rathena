@@ -2693,7 +2693,7 @@ ACMD_FUNC(memo)
 
 	memset(atcmd_output, '\0', sizeof(atcmd_output));
 	int64 extendedMemo = pc_readreg2(sd, "EXT_MEMO_SLOTS");
-#if PACKETVER_MAIN_NUM < 20170502 || PACKETVER_RE_NUM < 20170419 || !defined(PACKETVER_ZERO)
+#if PACKETVER_MAIN_NUM < 20170502 && PACKETVER_RE_NUM < 20170419 && !defined(PACKETVER_ZERO)
 	extendedMemo = 0; // Extended memo points are not supported before these versions, so we need to ignore the value read from the register.
 #endif
 	if( !message || !*message || sscanf(message, "%11d", &position) < 1 )

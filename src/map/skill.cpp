@@ -5522,7 +5522,7 @@ int32 skill_castend_map (map_session_data *sd, uint16 skill_id, const char *mapn
 #if PACKETVER_MAIN_NUM < 20170502 || PACKETVER_RE_NUM < 20170419 || !defined(PACKETVER_ZERO)
 			extendedMemo = 0; // Extended memo points are not supported before these versions, so we need to ignore the value read from the register.
 #endif
-			const struct s_point_str *p[1+MAX_MEMOPOINTS+extendedMemo];
+			const struct s_point_str *p[1+MAX_MEMOPOINTS+MAX_MEMOPOINTS_EXTENDED];
 			std::shared_ptr<s_skill_unit_group> group;
 			int32 i, lv, wx, wy;
 			int32 maxcount=0;

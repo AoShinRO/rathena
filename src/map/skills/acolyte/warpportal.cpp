@@ -15,7 +15,7 @@ void SkillWarpPortal::castendPos2(block_list* src, int32 x, int32 y, uint16 skil
 	status_change* sc = status_get_sc(src);
 
 	if(sd != nullptr) {
-		int64 extendedMemo = pc_readreg2(sd, "EXT_MEMO_SLOTS");
+		int64 extendedMemo = cap_value(pc_readreg2(sd, "EXT_MEMO_SLOTS"), 0, MAX_MEMOPOINTS_EXTENDED);
 #if PACKETVER_MAIN_NUM < 20170502 && PACKETVER_RE_NUM < 20170419 && !defined(PACKETVER_ZERO)
 		extendedMemo = 0; // Extended memo points are not supported before these versions, so we need to ignore the value read from the register.
 #endif

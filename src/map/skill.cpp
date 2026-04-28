@@ -5554,13 +5554,12 @@ int32 skill_castend_map (map_session_data *sd, uint16 skill_id, const char *mapn
 			wy = sd->menuskill_val&0xffff;
 
 			if( lv <= 0 ) return 0;
-			lv += (int32)extendedMemo;
-			if( lv > 4 + MAX_MEMOPOINTS_EXTENDED ) lv = 4 + MAX_MEMOPOINTS_EXTENDED; // crash prevention
+			if( lv + (int32)extendedMemo > 4 + MAX_MEMOPOINTS_EXTENDED ) lv = 4 + MAX_MEMOPOINTS_EXTENDED; // crash prevention
 
 
 			// check if the chosen map exists in the memo list
-			ARR_FIND( 0, lv, i, strncmp( p[i]->map, mapname, sizeof( p[i]->map ) ) == 0 );
-			if( i < lv ) {
+			ARR_FIND( 0, lv + (int32)extendedMemo, i, strncmp( p[i]->map, mapname, sizeof( p[i]->map ) ) == 0 );
+			if( i < lv + (int32)extendedMemo) {
 				x=p[i]->x;
 				y=p[i]->y;
 			} else {

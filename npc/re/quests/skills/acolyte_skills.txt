@@ -536,6 +536,7 @@ einbroch,178,148,4	script	Suan	1_M_PASTOR,{
 			open_quest_ui(16594); // The Hide and Seek of the Naughty, the Restlessness of the Adults 2
 		else
 			open_quest_ui(16595); // The Hide and Seek of the Naughty, the Restlessness of the Adults 3
+		end;
 	}
 	
 	if(checkquest(16596,HUNTING) == 2) // Hide and Seek of the Naughty Boys, Hand and Foot Gestures to Save

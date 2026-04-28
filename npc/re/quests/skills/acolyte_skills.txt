@@ -293,7 +293,7 @@ umbala,127,140,4	script	Tita	1_F_PRIEST,{
 
 	if(isbegin_quest(16589) == 1 || isbegin_quest(16590) == 1 || isbegin_quest(16591) == 1) // Banquet of the Dead, Guided by the Living
 	{
-		mes .npc_name$; 
+		mes .npc_name$;
 		mes "I have to go to save it, but the Umbala people are telling me it's dangerous."; //unnoficial behavior
 		close2;
 		if(isbegin_quest(16589) == 1)
@@ -302,9 +302,9 @@ umbala,127,140,4	script	Tita	1_F_PRIEST,{
 			open_quest_ui(16590); // Banquet of the Dead, Guided by the Living 2
 		else
 			open_quest_ui(16591); // Banquet of the Dead, Guided by the Living 3
-			open_quest_ui(16591); // Banquet of the Dead, Guided by the Living 3
 		end;
-		
+	}
+
 	if(checkquest(16592,HUNTING) == 2) //The Banquet of the Dead, the Night of Festival is Over
 	{
 		if(isbegin_quest(16599) == 1){ // Safe return after completing the mission

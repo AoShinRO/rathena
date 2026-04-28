@@ -5518,7 +5518,11 @@ int32 skill_castend_map (map_session_data *sd, uint16 skill_id, const char *mapn
 
 	case AL_WARP:
 		if( sd != nullptr ){
-			const struct s_point_str *p[4];
+			int64 extendedMemo = cap_value(pc_readreg2(sd, "EXT_MEMO_SLOTS"), 0, MAX_MEMOPOINTS_EXTENDED);
+#if PACKETVER_MAIN_NUM < 20170502 || PACKETVER_RE_NUM < 20170419 || !defined(PACKETVER_ZERO)
+			extendedMemo = 0; // Extended memo points are not supported before these versions, so we need to ignore the value read from the register.
+#endif
+			const struct s_point_str *p[1+MAX_MEMOPOINTS+extendedMemo];
 			std::shared_ptr<s_skill_unit_group> group;
 			int32 i, lv, wx, wy;
 			int32 maxcount=0;
@@ -5532,9 +5536,8 @@ int32 skill_castend_map (map_session_data *sd, uint16 skill_id, const char *mapn
 				return 0;
 			}
 			p[0] = &sd->status.save_point;
-			p[1] = &sd->status.memo_point[0];
-			p[2] = &sd->status.memo_point[1];
-			p[3] = &sd->status.memo_point[2];
+			for (i = 0; i < MAX_MEMOPOINTS + extendedMemo; ++i)
+				p[i+1] = &sd->status.memo_point[i];
 
 			if((maxcount = skill_get_maxcount(skill_id, sd->menuskill_val)) > 0) {
 				unit_skillunit_maxcount(sd->ud, skill_id, maxcount);
@@ -5551,7 +5554,9 @@ int32 skill_castend_map (map_session_data *sd, uint16 skill_id, const char *mapn
 			wy = sd->menuskill_val&0xffff;
 
 			if( lv <= 0 ) return 0;
-			if( lv > 4 ) lv = 4; // crash prevention
+			lv += (int32)extendedMemo;
+			if( lv > 4 + MAX_MEMOPOINTS_EXTENDED ) lv = 4 + MAX_MEMOPOINTS_EXTENDED; // crash prevention
+
 
 			// check if the chosen map exists in the memo list
 			ARR_FIND( 0, lv, i, strncmp( p[i]->map, mapname, sizeof( p[i]->map ) ) == 0 );

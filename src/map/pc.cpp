@@ -7245,7 +7245,6 @@ bool pc_memo(map_session_data* sd, int32 pos)
 	}
 
 	// Extended Memo Slot Quest
-	int64 extendedMemo = cap_value(pc_readreg2(sd, "EXT_MEMO_SLOTS"), 0, MAX_MEMOPOINTS_EXTENDED);
 #if PACKETVER_MAIN_NUM < 20170502 && PACKETVER_RE_NUM < 20170419 && !defined(PACKETVER_ZERO)
 	extendedMemo = 0; // Extended memo points are not supported before these versions, so we need to ignore the value read from the register.
 #endif

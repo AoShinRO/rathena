@@ -302,8 +302,8 @@ umbala,127,140,4	script	Tita	1_F_PRIEST,{
 			open_quest_ui(16590); // Banquet of the Dead, Guided by the Living 2
 		else
 			open_quest_ui(16591); // Banquet of the Dead, Guided by the Living 3
+			open_quest_ui(16591); // Banquet of the Dead, Guided by the Living 3
 		end;
-	}
 		
 	if(checkquest(16592,HUNTING) == 2) //The Banquet of the Dead, the Night of Festival is Over
 	{

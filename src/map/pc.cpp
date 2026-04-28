@@ -7269,7 +7269,7 @@ bool pc_memo(map_session_data* sd, int32 pos)
 
 	if( pos == -1 )
 	{
-		uint8 i;
+		int32 i;
 		const char* mapname = map_mapid2mapname( sd->m );
 
 		// prevent memo-ing the same map multiple times

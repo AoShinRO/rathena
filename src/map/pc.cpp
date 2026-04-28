@@ -9532,8 +9532,9 @@ int32 pc_resetskill(map_session_data* sd, int32 flag)
 		}
 	}
 
-	if (pc_readreg2(sd, "EXT_MEMO_SLOTS"))
+	if (!(flag&2) && pc_readreg2(sd, "EXT_MEMO_SLOTS"))
 		pc_setreg2(sd, "EXT_MEMO_SLOTS", 0); //kro wipe extended memo slots on skill reset
+
 
 	if( flag&2 || !skill_point ) return skill_point;
 

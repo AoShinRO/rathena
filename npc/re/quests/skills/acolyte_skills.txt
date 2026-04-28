@@ -158,7 +158,6 @@ prontera,225,330,4	script	Missionary Rosetta	4_F_SISTER,{
 		mes .npc_name$;
 		mes "Then, please go to <NAVI>[Umbala]<INFO>umbala,127,140,0,000,0</INFO></NAVI> and listen to Sister Tita situation. ";
 		mes "I will pray that everything goes smoothly and that you can spread the name of Odin in this world.";
-		force_memo("umbala",123,138,3);
 		changequest(16598,16587); // Return to the Cathedral of Prontera(2) -> Umbala Missionary Work
 		finished_memo_step = 1;
 		close;

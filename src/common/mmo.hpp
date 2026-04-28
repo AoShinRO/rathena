@@ -167,6 +167,7 @@ const t_itemid WEDDING_RING_F = 2635;
 
 #define MAX_FRIENDS 40
 #define MAX_MEMOPOINTS 3
+#define MAX_MEMOPOINTS_EXTENDED 3
 #define MAX_SKILLCOOLDOWN 20
 
 //Size of the fame list arrays.
@@ -603,7 +604,7 @@ struct mmo_charstatus {
 	struct s_point_str last_point;
 	int32 last_point_instanceid;
 	struct s_point_str save_point;
-	struct s_point_str memo_point[MAX_MEMOPOINTS];
+	struct s_point_str memo_point[MAX_MEMOPOINTS + MAX_MEMOPOINTS_EXTENDED];
 	struct s_skill skill[MAX_SKILL];
 
 	struct s_friend friends[MAX_FRIENDS]; //New friend system [Skotlex]

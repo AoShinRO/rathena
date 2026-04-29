@@ -7244,29 +7244,37 @@ bool pc_memo(map_session_data* sd, int32 pos)
 		return false;
 	}
 
+	// Extended Memo Slot Quest
+	int64 extendedMemo = cap_value(pc_readreg2(sd, "EXT_MEMO_SLOTS"), 0, MAX_MEMOPOINTS_EXTENDED);
+#if PACKETVER_MAIN_NUM < 20170502 && PACKETVER_RE_NUM < 20170419 && !defined(PACKETVER_ZERO)
+	extendedMemo = 0; // Extended memo points are not supported before these versions, so we need to ignore the value read from the register.
+#endif
 	// check inputs
-	if( pos < -1 || pos >= MAX_MEMOPOINTS )
+	if( pos < -1 || pos >= MAX_MEMOPOINTS + extendedMemo)
 		return false; // invalid input
 
 	// check required skill level
 	skill = pc_checkskill(sd, AL_WARP);
-	if( skill < 1 ) {
-		clif_skill_memomessage( *sd, WARPPOINT_NOT_LEARNED ); // "You haven't learned Warp."
-		return false;
-	}
-	if( skill < 2 || skill - 2 < pos ) {
-		clif_skill_memomessage( *sd, WARPPOINT_LOW_LEVEL ); // "Skill Level is not high enough."
-		return false;
+
+	if (skill < 4) {
+		if (skill < 1) {
+			clif_skill_memomessage(*sd, WARPPOINT_NOT_LEARNED); // "You haven't learned Warp."
+			return false;
+		}
+		if (skill < 2 || skill - 2 < pos) {
+			clif_skill_memomessage(*sd, WARPPOINT_LOW_LEVEL); // "Skill Level is not high enough."
+			return false;
+		}
 	}
 
 	if( pos == -1 )
 	{
-		uint8 i;
+		int32 i;
 		const char* mapname = map_mapid2mapname( sd->m );
 
 		// prevent memo-ing the same map multiple times
-		ARR_FIND( 0, MAX_MEMOPOINTS, i, strncmp( sd->status.memo_point[i].map, mapname, sizeof( sd->status.memo_point[i].map ) ) == 0 );
-		memmove( &sd->status.memo_point[1], &sd->status.memo_point[0], ( u8min( i, MAX_MEMOPOINTS - 1 ) ) * sizeof( struct s_point_str ) );
+		ARR_FIND( 0, MAX_MEMOPOINTS + extendedMemo, i, strncmp( sd->status.memo_point[i].map, mapname, sizeof( sd->status.memo_point[i].map ) ) == 0 );
+		memmove( &sd->status.memo_point[1], &sd->status.memo_point[0], ( u8min( i, static_cast<uint8>( MAX_MEMOPOINTS + extendedMemo - 1 ) ) ) * sizeof( struct s_point_str ) );
 		pos = 0;
 	}
 
@@ -9523,6 +9531,10 @@ int32 pc_resetskill(map_session_data* sd, int32 flag)
 			sd->status.skill[idx].flag = SKILL_FLAG_PERMANENT;
 		}
 	}
+
+	if (!(flag&2) && pc_readreg2(sd, "EXT_MEMO_SLOTS"))
+		pc_setreg2(sd, "EXT_MEMO_SLOTS", 0); //kro wipe extended memo slots on skill reset
+
 
 	if( flag&2 || !skill_point ) return skill_point;
 

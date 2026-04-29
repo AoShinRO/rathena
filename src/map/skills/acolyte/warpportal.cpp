@@ -15,8 +15,12 @@ void SkillWarpPortal::castendPos2(block_list* src, int32 x, int32 y, uint16 skil
 	status_change* sc = status_get_sc(src);
 
 	if(sd != nullptr) {
-		std::vector<std::string> maps( MAX_MEMOPOINTS + 1 );
-
+		int64 extendedMemo = cap_value(pc_readreg2(sd, "EXT_MEMO_SLOTS"), 0, MAX_MEMOPOINTS_EXTENDED);
+#if PACKETVER_MAIN_NUM < 20170502 && PACKETVER_RE_NUM < 20170419 && !defined(PACKETVER_ZERO)
+		extendedMemo = 0; // Extended memo points are not supported before these versions, so we need to ignore the value read from the register.
+#endif
+		std::vector<std::string> maps;
+		maps.reserve(static_cast<size_t>(MAX_MEMOPOINTS + extendedMemo + 1));
 		maps.push_back( sd->status.save_point.map );
 
 		if( skill_lv >= 2 ){
@@ -27,6 +31,18 @@ void SkillWarpPortal::castendPos2(block_list* src, int32 x, int32 y, uint16 skil
 
 				if( skill_lv >= 4 ){
 					maps.push_back( sd->status.memo_point[2].map );
+
+					if (skill_lv + extendedMemo >= 5) {
+						maps.push_back(sd->status.memo_point[3].map);
+
+						if (skill_lv + extendedMemo >= 6) {
+							maps.push_back(sd->status.memo_point[4].map);
+
+							if (skill_lv + extendedMemo >= 7) {
+								maps.push_back(sd->status.memo_point[5].map);
+							}
+						}
+					}
 				}
 			}
 		}

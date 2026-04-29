@@ -2692,12 +2692,16 @@ ACMD_FUNC(memo)
 	nullpo_retr(-1, sd);
 
 	memset(atcmd_output, '\0', sizeof(atcmd_output));
-
+	int64 extendedMemo = cap_value(pc_readreg2(sd, "EXT_MEMO_SLOTS"), 0, MAX_MEMOPOINTS_EXTENDED);
+#if PACKETVER_MAIN_NUM < 20170502 && PACKETVER_RE_NUM < 20170419 && !defined(PACKETVER_ZERO)
+	extendedMemo = 0; // Extended memo points are not supported before these versions, so we need to ignore the value read from the register.
+#endif
 	if( !message || !*message || sscanf(message, "%11d", &position) < 1 )
 	{
 		int32 i;
 		clif_displaymessage(sd->fd,  msg_txt(sd,668)); // Your actual memo positions are:
-		for( i = 0; i < MAX_MEMOPOINTS; i++ )
+
+		for( i = 0; i < static_cast<int32>( MAX_MEMOPOINTS + extendedMemo ); i++ )
 		{
 			if( strcmp( "", sd->status.memo_point[i].map ) != 0 )
 				sprintf( atcmd_output, "%d - %s (%d,%d)", i, sd->status.memo_point[i].map, sd->status.memo_point[i].x, sd->status.memo_point[i].y );
@@ -2708,9 +2712,9 @@ ACMD_FUNC(memo)
 		return 0;
  	}
 
-	if( position < 0 || position >= MAX_MEMOPOINTS )
+	if( position < 0 || position >= static_cast<int32>( MAX_MEMOPOINTS + extendedMemo ) )
 	{
-		sprintf(atcmd_output, msg_txt(sd,1008), 0, MAX_MEMOPOINTS-1); // Please enter a valid position (usage: @memo <memo_position:%d-%d>).
+		sprintf(atcmd_output, msg_txt(sd,1008), 0, static_cast<int32>( MAX_MEMOPOINTS + extendedMemo - 1 ) ); // Please enter a valid position (usage: @memo <memo_position:%d-%d>).
 		clif_displaymessage(fd, atcmd_output);
 		return -1;
 	}

@@ -394,7 +394,7 @@ int32 char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
 		//insert here.
 		StringBuf_Clear(&buf);
 		StringBuf_Printf(&buf, "INSERT INTO `%s`(`char_id`,`map`,`x`,`y`) VALUES ", schema_config.memo_db);
-		for( i = 0, count = 0; i < MAX_MEMOPOINTS; ++i )
+		for( i = 0, count = 0; i < MAX_MEMOPOINTS + MAX_MEMOPOINTS_EXTENDED; ++i )
 		{
 			if( strcmp( "", p->memo_point[i].map ) != 0 ){
 				if( count )
@@ -1151,7 +1151,7 @@ int32 char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_
 
 	//read memo data
 	//`memo` (`memo_id`,`char_id`,`map`,`x`,`y`)
-	if( SQL_ERROR == stmt.Prepare("SELECT `map`,`x`,`y` FROM `%s` WHERE `char_id`=? ORDER by `memo_id` LIMIT %d", schema_config.memo_db, MAX_MEMOPOINTS)
+	if( SQL_ERROR == stmt.Prepare("SELECT `map`,`x`,`y` FROM `%s` WHERE `char_id`=? ORDER by `memo_id` LIMIT %d", schema_config.memo_db, MAX_MEMOPOINTS + MAX_MEMOPOINTS_EXTENDED)
 	||	SQL_ERROR == stmt.BindParam(0, SQLDT_INT32, &char_id, 0)
 	||	SQL_ERROR == stmt.Execute()
 	||	SQL_ERROR == stmt.BindColumn(0, SQLDT_STRING, &tmp_point.map, sizeof(tmp_point.map), nullptr, nullptr)
@@ -1159,7 +1159,7 @@ int32 char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_
 	||	SQL_ERROR == stmt.BindColumn(2, SQLDT_INT16,  &tmp_point.y, 0, nullptr, nullptr) )
 		SqlStmt_ShowDebug(stmt);
 
-	for( i = 0; i < MAX_MEMOPOINTS && SQL_SUCCESS == stmt.NextRow(); ++i )
+	for( i = 0; i < MAX_MEMOPOINTS + MAX_MEMOPOINTS_EXTENDED && SQL_SUCCESS == stmt.NextRow(); ++i )
 	{
 		memcpy(&p->memo_point[i], &tmp_point, sizeof(tmp_point));
 	}

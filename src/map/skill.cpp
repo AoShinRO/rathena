@@ -5554,7 +5554,7 @@ int32 skill_castend_map (map_session_data *sd, uint16 skill_id, const char *mapn
 			wy = sd->menuskill_val&0xffff;
 
 			if( lv <= 0 ) return 0;
-			if( lv + (int32)extendedMemo > 4 + MAX_MEMOPOINTS_EXTENDED ) lv = 4 + MAX_MEMOPOINTS_EXTENDED; // crash prevention
+			if( lv > 4 ) lv = 4; // crash prevention: lv + extendedMemo must not exceed array size (1 + MAX_MEMOPOINTS + extendedMemo)
 
 
 			// check if the chosen map exists in the memo list
